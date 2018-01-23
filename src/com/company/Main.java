@@ -6,6 +6,12 @@ class Main
 {
     public static void main(String[] args)
     {
+        //1. Allow user input of a number (guess)
+        //2. Tell the user if their guess is too high or too low.
+        //4. Allow 5 chances, if the number isn't guessed, tell them what it is.
+        //4. If the number is guessed, congratulate them.
+        //5. Allow the user to play again if they would like.
+
         boolean playAgain = true;
         while (playAgain)
         {
@@ -60,8 +66,16 @@ class Main
             System.out.println("Do you wish to play again? \n\nPress the y character, then enter to play again.\nPress the n key then enter to close.\n");
 
             String playString = scanner.nextLine();
-            char play = playString.charAt(0);
+            char play = 'n';
 
+            try
+            {
+                play = playString.charAt(0);
+            }
+            catch (Exception e)
+            {
+                System.out.println("Could not read input. Program will now close.");
+            }
 
 
             if (play != 'y')
