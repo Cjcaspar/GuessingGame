@@ -1,103 +1,123 @@
 package com.company;
+
 import java.util.Random;
 import java.util.Scanner;
-public class Utility
-{
-    public static void game(int difficulty)
-    {
+
+public class Utility {
+    //Class that holds methods to start game.
+
+    public static void game() {
+        //Method that starts the game
+
+        int difficulty = getDifficulty();
+
         int numGuess = -1;
         Random rand = new Random();
-        Scanner scanner = new Scanner(System.in);
+        //Initialize random method
 
-        if (difficulty == 1)
-        {
+        Scanner scanner = new Scanner(System.in);
+        //Initialize scanner class
+
+        if (difficulty == 1) {
             numGuess = 10;
-        }
-        else if (difficulty == 2)
-        {
-            numGuess =  7;
-        }
-        else if (difficulty == 3)
-        {
+        } else if (difficulty == 2) {
+            numGuess = 7;
+        } else if (difficulty == 3) {
             numGuess = 5;
         }
+        //If statement that sets number of guesses allowed based on input from the user.
 
         int n = rand.nextInt(100) + 1;
-        System.out.println("I will generate a number between 1 and 100. You will guess the number and I will tell you if your number is higher or lower than the generated number. You have " + numGuess + "chances to correctly guess my number. \n \n");
+        //randomly generate a number between 1 and 100
+
+        MessageUtils.instructions(numGuess);
 
 
-        for (int i = 0; i < numGuess; i++)
-        {
+        for (int i = 0; i < numGuess; i++) {
             int guess = -1;
-            while (guess < 1 || guess > 100)
-            {
-                System.out.println("Guess number " + (i + 1) + ":");
+
+            while (guess < 1 || guess > 100) {
+                MessageUtils.guessNumber(i);
                 String guessString = scanner.nextLine();
 
-                try
-                {
+                try {
                     guess = Integer.parseInt(guessString);
-                    if (guess < 1 || guess > 100)
-                    {
-                        System.out.println("Your number is not between 1 and 100. Please try again.");
+                    if (guess < 1 || guess > 100) {
+                        MessageUtils.invalidInput();
                     }
-                }
-                catch (Exception e)
-                {
-                    System.out.println("That is not a valid input. please try entering a number between 1 and 100");
+                } catch (Exception e) {
+                    MessageUtils.invalidInput();
                 }
             }
+            //While loop takes user input, to guess the random number. Try catch will stop program from crashing in the case of an exception
 
-            if (n == guess)
-            {
-                System.out.println("Congratulations, you have guessed correctly on attempt number: " + (i + 1) + "\n");
+            if (n == guess) {
+                MessageUtils.equals(i);
                 break;
+            } else if (n > guess) {
+                MessageUtils.lower();
+            } else if (n < guess) {
+                MessageUtils.higher();
             }
-            else if (n > guess)
-            {
-                System.out.println("Your guess was lower than my number\n");
+            if (i == (numGuess - 1)) {
+                MessageUtils.wrong(n);
             }
-            else if (n < guess)
-            {
-                System.out.println("Your guess was higher than my number\n");
+            //if statement compares guess to the randomly generated number. Then outputs to user based on comparison.
+        }
+    }
+
+    public static void playAgain() {
+        //Method will collect user input to determine if they want to play again.
+        boolean playAgain = true;
+        while (playAgain) {
+            Scanner scanner = new Scanner(System.in);
+
+            MessageUtils.playAgain();
+            //output instructions asking user if they want to play again.
+            String playString = scanner.nextLine();
+            //Collects user input
+
+            char play = 'a';
+            //initializing variable
+
+            while (play != 'y' && play != 'n')
+            try {
+                play = playString.charAt(0);
+            } catch (Exception e) {
+                MessageUtils.close();
             }
-            if (i == (numGuess - 1))
-            {
-                System.out.println("Better luck next time! My number was: " + n + "\n");
+            //converts user input to y or n. will catch if input is not y or n.
+
+            if (play == 'y') {
+                Utility.game();
+            }
+            else {
+                playAgain = false;
             }
         }
     }
-    public static char playAgain()
-    {
+
+    public static int getDifficulty() {
+        //Method collects user input
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Do you wish to play again? \n\nPress the y character, then enter to play again.\nPress the n key then enter to close.\n");
-        String playString = scanner.nextLine();
-        char play = 'n';
 
-        try
-        {
-            play = playString.charAt(0);
+        MessageUtils.selectDifficulty();
+        //Output to user for instructions on selecting difficulty
+
+        int difficulty = -1;
+        //initiating difficulty
+
+        while (difficulty != 1 && difficulty != 2 && difficulty != 3) {
+            try {
+                difficulty = scanner.nextInt();
+            } catch (Exception e){
+                MessageUtils.difficultyError();
+            }
         }
-        catch (Exception e)
-        {
-            System.out.println("Could not read input. Program will now close.");
-        }
+        //while loop ensures input is valid, and sets input to variable difficulty.
 
-        return play;
-    }
-
-    public static int getDifficulty()
-    {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Which difficulty do you wish to play? enter 1 for easy, 2 for medium, or 3 for hard.");
-        int difficulty = scanner.nextInt();
-
-        while (difficulty != 1 && difficulty != 2 && difficulty != 3)
-        {
-            System.out.println("That input does not correspond to a difficulty level. Please try again");
-            difficulty = scanner.nextInt();
-        }
         return difficulty;
+
     }
 }
 

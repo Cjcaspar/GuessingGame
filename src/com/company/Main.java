@@ -1,25 +1,15 @@
 package com.company;
+
 import java.util.Random;
 import java.util.Scanner;
 
-class Main
-{
-    public static void main(String[] args)
-    {
-        boolean playAgain = true;
-        while (playAgain)
-        {
-            int difficulty = Utility.getDifficulty();
+class Main {
+    public static void main(String[] args) {
 
-            Utility.game(difficulty);
-
-            char play = Utility.playAgain();
-
-            if (play != 'y')
-            {
-                playAgain = false;
-            }
-        }
+            Utility.game();
+            //Starts game
+            Utility.playAgain();
+            //collects user input to determine if they want to play again
     }
 }
 
