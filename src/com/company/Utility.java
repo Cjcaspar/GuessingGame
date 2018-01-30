@@ -80,11 +80,12 @@ public class Utility {
             char play = 'a';
             //initializing variable
 
-            while (play != 'y' && play != 'n')
-            try {
-                play = playString.charAt(0);
-            } catch (Exception e) {
-                MessageUtils.close();
+            while (play != 'y' && play != 'n') {
+                try {
+                    play = playString.charAt(0);
+                } catch (Exception e) {
+                    MessageUtils.close();
+                }
             }
             //converts user input to y or n. will catch if input is not y or n.
 
@@ -97,7 +98,7 @@ public class Utility {
         }
     }
 
-    public static int getDifficulty() {
+    private static int getDifficulty() {
         //Method collects user input
         Scanner scanner = new Scanner(System.in);
 
@@ -107,13 +108,16 @@ public class Utility {
         int difficulty = -1;
         //initiating difficulty
 
-        while (difficulty != 1 && difficulty != 2 && difficulty != 3) {
+        do {
+            String difficultyString = scanner.nextLine();
             try {
-                difficulty = scanner.nextInt();
+                difficulty = Integer.parseInt(difficultyString);
+
             } catch (Exception e){
                 MessageUtils.difficultyError();
             }
         }
+        while (difficulty != 1 && difficulty != 2 && difficulty != 3);
         //while loop ensures input is valid, and sets input to variable difficulty.
 
         return difficulty;
